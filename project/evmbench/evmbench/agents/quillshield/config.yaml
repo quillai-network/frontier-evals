@@ -1,0 +1,23 @@
+# QuillShield agent for EVMBench.
+# Select with evmbench.solver.agent_id=<id>.
+# Models are routed through OpenRouter (matches the QuillShield audit pipeline).
+
+common: &common_settings
+  start: quillshield/start.sh
+  instruction_file_name: AGENTS.md
+  # Allowlisted TLS SNI hosts when EVMbenchSolver.disable_internet is on.
+  gateway_sni_hosts:
+    - openrouter.ai
+    - models.dev
+
+quillshield-default:
+  <<: *common_settings
+  env_vars:
+    OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+    PIPELINE_MODEL: openrouter/deepseek/deepseek-v4-pro
+
+quillshield-opus:
+  <<: *common_settings
+  env_vars:
+    OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+    PIPELINE_MODEL: openrouter/anthropic/claude-opus-4.5

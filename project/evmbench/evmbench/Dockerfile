@@ -67,6 +67,11 @@ RUN npm install -g opencode-ai@${OPENCODE_VERSION}
 
 RUN curl -LO https://github.com/BurntSushi/ripgrep/releases/download/14.1.1/ripgrep_14.1.1-1_amd64.deb && dpkg -i ripgrep_14.1.1-1_amd64.deb
 
+# QuillShield CLI (prebuilt linux-x64 binary baked into the image).
+# Build it on the host first: see agents/quillshield/start.sh header.
+COPY bin/quillshield /usr/local/bin/quillshield
+RUN chmod 0755 /usr/local/bin/quillshield && quillshield --version
+
 WORKDIR "$AGENT_DIR"
 
 # Foundry (stable)
