@@ -55,7 +55,9 @@ Non-`human` agents require provider API keys. These are:
 - `OPENAI_API_KEY` (Codex)
 - `ANTHROPIC_API_KEY` (Claude Code)
 - `GEMINI_API_KEY` (Gemini CLI)
-- `OPENROUTER_API_KEY` (OpenCode)
+- `OPENROUTER_API_KEY` (OpenCode, QuillShield, and the detect-mode grader)
+
+The detect-mode grader routes judge calls through OpenRouter (default model: `openai/gpt-5`, reasoning effort: `high`). Override via `evmbench.solver.runtime_config.judge_model=<openrouter-model-id>` and `evmbench.solver.runtime_config.reasoning_effort=<low|medium|high>`.
 
 ### Running the Eval
 

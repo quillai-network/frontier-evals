@@ -46,6 +46,7 @@ CONTEXT_WINDOW_LENGTHS: dict[str, int] = {
     "o1-preview": 128_000,
     "gpt-4-turbo": 128_000,
     "gpt-5": 400_000,
+    "openai/gpt-5": 400_000,
     "gpt-5-mini": 400_000,
     "gpt-5-nano": 400_000,
     "gpt-5-2025-08-07": 400_000,
@@ -58,9 +59,10 @@ CONTEXT_WINDOW_LENGTHS: dict[str, int] = {
 
 
 def get_model_context_window_length(model: str) -> int:
-    if model not in CONTEXT_WINDOW_LENGTHS:
-        raise ValueError(f"Model {model} not found in context window lengths")
-    return CONTEXT_WINDOW_LENGTHS[model]
+    if model in CONTEXT_WINDOW_LENGTHS:
+        return CONTEXT_WINDOW_LENGTHS[model]
+    logger.warning(f"Model {model} not found in context window lengths, using 200_000")
+    return 200_000
 
 
 OPENAI_TIMEOUT_EXCEPTIONS = (

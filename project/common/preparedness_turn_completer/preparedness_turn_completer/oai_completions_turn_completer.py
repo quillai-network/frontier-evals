@@ -36,6 +36,8 @@ class OpenAICompletionsTurnCompleter(TurnCompleter):
         tools: list[ChatCompletionToolParam] | NotGiven = NOT_GIVEN,
         tool_choice: ChatCompletionToolChoiceOptionParam | NotGiven = NOT_GIVEN,
         retry_config: RetryConfig | None = None,
+        base_url: str | None = None,
+        api_key: str | None = None,
     ):
         self.model = model
         self.reasoning_effort = reasoning_effort
@@ -45,6 +47,8 @@ class OpenAICompletionsTurnCompleter(TurnCompleter):
         self.top_p = top_p
         self.tools = tools
         self.tool_choice = tool_choice
+        self.base_url = base_url
+        self.api_key = api_key
         self.encoding_name: str
         self.retry_config = retry_config or RetryConfig()
         try:
@@ -76,6 +80,8 @@ class OpenAICompletionsTurnCompleter(TurnCompleter):
         tools: list[ChatCompletionToolParam] | NotGiven = NOT_GIVEN
         tool_choice: ChatCompletionToolChoiceOptionParam | NotGiven = NOT_GIVEN
         retry_config: RetryConfig = Field(default_factory=RetryConfig)
+        base_url: str | None = None
+        api_key: str | None = None
 
         def build(self) -> OpenAICompletionsTurnCompleter:
             return OpenAICompletionsTurnCompleter(
@@ -88,6 +94,8 @@ class OpenAICompletionsTurnCompleter(TurnCompleter):
                 tools=self.tools,
                 tool_choice=self.tool_choice,
                 retry_config=self.retry_config,
+                base_url=self.base_url,
+                api_key=self.api_key,
             )
 
         @field_validator("*", mode="before")
@@ -105,7 +113,12 @@ class OpenAICompletionsTurnCompleter(TurnCompleter):
 
     @functools.cached_property
     def _client(self) -> openai.AsyncClient:
-        return openai.AsyncClient()
+        kwargs: dict[str, str] = {}
+        if self.base_url:
+            kwargs["base_url"] = self.base_url
+        if self.api_key:
+            kwargs["api_key"] = self.api_key
+        return openai.AsyncClient(**kwargs)
 
     def completion(
         self,

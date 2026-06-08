@@ -14,7 +14,7 @@ quillshield-default:
   <<: *common_settings
   env_vars:
     OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-    PIPELINE_MODEL: openrouter/deepseek/deepseek-v4-pro
+    PIPELINE_MODEL: openrouter/anthropic/claude-sonnet-4.5
 
 quillshield-opus:
   <<: *common_settings

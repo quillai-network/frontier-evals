@@ -37,7 +37,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Preinstall Jupyter + ipykernel so LocalCluster doesn't need to pip-install on first kernel start.
-RUN python3 -m pip install --no-cache-dir jupyter ipykernel && \
+# Slither is required by the QuillShield phase-0 slither-gate step.
+RUN python3 -m pip install --no-cache-dir jupyter ipykernel slither-analyzer && \
     python3 -m ipykernel install --sys-prefix
 
 # Create directory skeleton
